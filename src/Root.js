@@ -4,6 +4,7 @@ import logo from './logo.svg';
 import TextField from '@material-ui/core/TextField';
 import './App.css';
 import CatList from './components/cat-list';
+import CatSearch from './components/cat-search';
 
 /*const cats = [
 	{
@@ -38,6 +39,7 @@ class App extends Component {
 				like: true,
 			},
 		],
+		filteredName: '',
 	}
 	handleButtonClick = () => {
 		const {icon, name, cats, nextID} = this.state;
@@ -80,8 +82,13 @@ class App extends Component {
 			}),
 		})
   };
+	handleFilteredNameChange = name => {
+		this.setState({
+      filteredName: name,
+    });
+  };
   render() {
-		const {text, icon, name, cats} = this.state;
+		const {text, icon, name, cats, filteredName} = this.state;
     return (
       <div className="App">
         <header className="App-header">
@@ -97,9 +104,12 @@ class App extends Component {
           >
             {text}
           </a>
+					<CatSearch
+						onSearchChanged={this.handleFilteredNameChange}
+					/>
 					<div>
 						<CatList
-							cats={cats}
+							cats={cats.filter(cat => cat.name.toLowerCase().indexOf(filteredName.toLowerCase()) !== -1)}
 							onDelete={this.handleCatDelete}
 							onLikeChanged={this.handleLikeChange}
 						/>

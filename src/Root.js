@@ -5,6 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import './App.css';
 import CatList from './components/cat-list';
 import CatSearch from './components/cat-search';
+import CatSort from './components/cat-sort';
 
 /*const cats = [
 	{
@@ -40,6 +41,7 @@ class App extends Component {
 			},
 		],
 		filteredName: '',
+		sortField: '',
 	}
 	handleButtonClick = () => {
 		const {icon, name, cats, nextID} = this.state;
@@ -87,9 +89,31 @@ class App extends Component {
       filteredName: name,
     });
   };
+	handleSortChange = sortBy => {
+		this.setState({
+			sortField: sortBy,
+		})
+	}
   render() {
-		const {text, icon, name, cats, filteredName} = this.state;
-    return (
+		const {text, icon, name, cats, filteredName, sortField} = this.state;
+		const sortedCats = cats;
+		sortedCats.sort((catA, catB) => {
+			if (sortField === 'Name') {
+				if (catA.name.toLowerCase() < catB.name.toLowerCase())
+			    return -1;
+			  if (catA.name.toLowerCase() > catB.name.toLowerCase())
+			    return 1;
+			  return 0;
+			} else if (sortField === 'Like') {
+				if (catA.like < catB.like)
+			    return -1;
+			  if (catA.like > catB.like)
+			    return 1;
+			  return 0;
+			}
+			return 0;
+		});
+		return (
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
@@ -104,12 +128,16 @@ class App extends Component {
           >
             {text}
           </a>
+					<CatSort
+						onSortChange={this.handleSortChange}
+					/>
 					<CatSearch
 						onSearchChanged={this.handleFilteredNameChange}
 					/>
 					<div>
 						<CatList
-							cats={cats.filter(cat => cat.name.toLowerCase().indexOf(filteredName.toLowerCase()) !== -1)}
+							cats={(sortField === '' ? sortedCats : cats)
+								.filter(cat => cat.name.toLowerCase().indexOf(filteredName.toLowerCase()) !== -1)}
 							onDelete={this.handleCatDelete}
 							onLikeChanged={this.handleLikeChange}
 						/>

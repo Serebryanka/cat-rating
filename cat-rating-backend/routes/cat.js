@@ -38,3 +38,16 @@ module.exports = (app, db) => {
     }
   }); // End post cats
 };
+
+app.delete('/cats/:id', async (req, res) => {
+  const id = req.params.id;
+  const details = { '_id': new ObjectID(id) };
+  try {
+    const result = await db.collection('cats').deleteOne(details);
+    res.send({
+      success: result.result.n === 1,
+    });
+  } catch (err) {
+    res.send({'error':'An error has occurred'});
+  }
+});

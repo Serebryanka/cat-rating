@@ -1,89 +1,18 @@
 import React, { Component } from 'react';
-import Button from '@material-ui/core/Button';
 import logo from '../../logo.svg';
-import TextField from '@material-ui/core/TextField';
 import '../../App.css';
-import CatList from '../../components/cat-list';
+import CatList from '../../containers/cat-list';
 import CatSearch from '../../components/cat-search';
 import CatSort from '../../components/cat-sort';
+import CatAdd from '../../containers/cat-add';
 
-/*const cats = [
-	{
-		id: 1,
-		name: "Kisa",
-		icon: "https://cmkt-image-prd.global.ssl.fastly.net/0.1.0/ps/1770700/1160/772/m1/fpnw/wm0/black-cat-icon-flat-01-.jpg?1476726021&s=c956a64f60cd25e39dcd353c52e188a1",
-	},
-	{
-		id: 2,
-		name: "Kotya",
-		icon: "https://cdn3.iconfinder.com/data/icons/cat-force/256/cat_hungry.png",
-	},
-];*/
 
 class CatPage extends Component {
 	state = {
 		text: "Pelmeshki",
-		icon: "Tefteli",
-		name: "Gribochki",
-		nextID: 3,
-		cats: [
-			{
-				id: 1,
-				name: "Kisa",
-				icon: "https://cmkt-image-prd.global.ssl.fastly.net/0.1.0/ps/1770700/1160/772/m1/fpnw/wm0/black-cat-icon-flat-01-.jpg?1476726021&s=c956a64f60cd25e39dcd353c52e188a1",
-				like: true,
-			},
-			{
-				id: 2,
-				name: "Kotya",
-				icon: "https://cdn3.iconfinder.com/data/icons/cat-force/256/cat_hungry.png",
-				like: true,
-			},
-		],
 		filteredName: '',
 		sortField: '',
 	}
-	handleButtonClick = () => {
-		const {icon, name, cats, nextID} = this.state;
-		const newCat = {
-			id: nextID,
-			name: name,
-			icon: icon,
-			like: true,
-		};
-		this.setState({
-			cats: cats.concat(newCat),
-			nextID: nextID + 1,
-			text: "Vareniki",
-		})
-	};
-	handleCatDelete = (id) => {
-		const {cats} = this.state;
-		this.setState({
-			cats: cats.filter(cat => cat.id !== id),
-		})
-	};
-	handleIconChange = event => {
-    this.setState({
-      icon: event.target.value,
-    });
-  };
-	handleNameChange = event => {
-    this.setState({
-      name: event.target.value,
-    });
-  };
-	handleLikeChange = (id) => {
-		const {cats} = this.state;
-		this.setState({
-			cats: cats.map(cat => {
-				return cat.id === id ? {
-						...cat,
-						like: !cat.like,
-					} : cat;
-			}),
-		})
-  };
 	handleFilteredNameChange = name => {
 		this.setState({
       filteredName: name,
@@ -95,8 +24,8 @@ class CatPage extends Component {
 		})
 	}
   render() {
-		const {text, icon, name, cats, filteredName, sortField} = this.state;
-		const sortedCats = cats;
+		const {text, filteredName, sortField} = this.state;
+		/*const sortedCats = cats;
 		sortedCats.sort((catA, catB) => {
 			if (sortField === 'Name') {
 				if (catA.name.toLowerCase() < catB.name.toLowerCase())
@@ -113,6 +42,10 @@ class CatPage extends Component {
 			}
 			return 0;
 		});
+
+		cats={(sortField === '' ? sortedCats : cats)
+		  .filter(cat => cat.name.toLowerCase().indexOf(filteredName.toLowerCase()) !== -1)}
+		*/
 		return (
       <div className="App">
         <header className="App-header">
@@ -135,36 +68,9 @@ class CatPage extends Component {
 						onSearchChanged={this.handleFilteredNameChange}
 					/>
 					<div>
-						<CatList
-							cats={(sortField === '' ? sortedCats : cats)
-								.filter(cat => cat.name.toLowerCase().indexOf(filteredName.toLowerCase()) !== -1)}
-							onDelete={this.handleCatDelete}
-							onLikeChanged={this.handleLikeChange}
-						/>
+						<CatList />
 		      </div>
-					<TextField
-	          id="outlined-icon"
-	          label="Icon"
-						value={icon}
-          	onChange={this.handleIconChange}
-	          margin="normal"
-	          variant="outlined"
-	        />
-					<TextField
-	          id="outlined-name"
-						label="Name"
-	          value={name}
-          	onChange={this.handleNameChange}
-	          margin="normal"
-	          variant="outlined"
-	        />
-					<Button
-						variant="contained"
-						color="secondary"
-						onClick={this.handleButtonClick}
-					>
-		        Add Kotik
-		      </Button>
+					<CatAdd />
         </header>
       </div>
     );

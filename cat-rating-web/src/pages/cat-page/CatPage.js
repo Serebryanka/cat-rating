@@ -29,9 +29,7 @@ class CatPage extends Component {
           >
             {text}
           </a>
-					<CatSort
-						onSortChange={this.handleSortChange}
-					/>
+					<CatSort />
 					<CatSearch />
 					<div>
 						<CatList />

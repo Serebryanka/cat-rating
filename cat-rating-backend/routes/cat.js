@@ -1,13 +1,21 @@
 
 var ObjectID = require('mongodb').ObjectID;
 
+const itemToCat = (item) => ({
+  id: item._id,
+  name: item.name,
+  icon: item.icon,
+  like: (item.like === 'true') ? true : false,
+});
+
 module.exports = (app, db) => {
 
   app.get('/cats/:id', async (req, res) => {
     const id = req.params.id;
     const details = { '_id': new ObjectID(id) };
     try {
-      const cat = await db.collection('cats').findOne(details);
+      const receivedCat = await db.collection('cats').findOne(details);
+      const cat = itemToCat(receivedCat);
       res.send(cat);
     } catch (err) {
       res.send({'error':'An error has occurred'});
@@ -16,7 +24,8 @@ module.exports = (app, db) => {
 
   app.get('/cats', async (req, res) => {
     try {
-      const cats = await db.collection('cats').find({}).toArray();
+      const receivedCats = await db.collection('cats').find({}).toArray();
+      const cats = receivedCats.map(itemToCat);
       res.send(cats);
     } catch (err) {
       res.send({'error':'An error has occurred'});
@@ -37,17 +46,17 @@ module.exports = (app, db) => {
       res.send({ 'error': 'An error has occurred' });
     }
   }); // End post cats
-};
 
-app.delete('/cats/:id', async (req, res) => {
-  const id = req.params.id;
-  const details = { '_id': new ObjectID(id) };
-  try {
-    const result = await db.collection('cats').deleteOne(details);
-    res.send({
-      success: result.result.n === 1,
-    });
-  } catch (err) {
-    res.send({'error':'An error has occurred'});
-  }
-});
+  app.delete('/cats/:id', async (req, res) => {
+    const id = req.params.id;
+    const details = { '_id': new ObjectID(id) };
+    try {
+      const result = await db.collection('cats').deleteOne(details);
+      res.send({
+        success: result.result.n === 1,
+      });
+    } catch (err) {
+      res.send({'error':'An error has occurred'});
+    }
+  });
+};

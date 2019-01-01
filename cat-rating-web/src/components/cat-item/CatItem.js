@@ -62,7 +62,7 @@ class CatItem extends Component {
 CatItem.propTypes = {
 	classes: PropTypes.object.isRequired,
 	cat: PropTypes.shape({
-		id: PropTypes.number.isRequired,
+		id: PropTypes.string.isRequired,
 		name: PropTypes.string.isRequired,
 		icon: PropTypes.string.isRequired,
 		like: PropTypes.bool.isRequired,

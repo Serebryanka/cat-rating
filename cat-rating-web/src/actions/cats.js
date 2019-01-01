@@ -13,6 +13,7 @@ export const fetchCats = () => {
     try {
       const response = await fetch('http://localhost:8000/cats');
       const cats = await response.json();
+      console.log(cats);
       dispatch({
         type: FETCH_CATS,
         payload: {
@@ -25,7 +26,30 @@ export const fetchCats = () => {
   };
 };
 
-export const addCat = item => ({
+export const addCat = item => {
+  return async (dispatch) => {
+    try {
+      const response = await fetch('http://localhost:8000/cats', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(item),
+      });
+      const cat = await response.json();
+      dispatch({
+        type: ADD_CAT,
+        payload: {
+          item: cat,
+        },
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
+/*export const addCat = item => ({
   type: ADD_CAT,
   payload: {
     item: {
@@ -33,7 +57,7 @@ export const addCat = item => ({
       id: ++nextCatId,
     }
   },
-});
+});*/
 
 export const removeCat = id => ({
   type: REMOVE_CAT,

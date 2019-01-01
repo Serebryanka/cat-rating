@@ -6,5 +6,9 @@ import CatAdd from '../../components/cat-add';
 
 export default connect(
   null,
-  {onAdd: addCat}
+  dispatch => ({
+    onAdd: (item) => {
+      dispatch(addCat(item))
+    },
+  })
 )(CatAdd);

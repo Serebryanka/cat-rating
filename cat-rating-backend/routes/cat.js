@@ -5,7 +5,7 @@ const itemToCat = (item) => ({
   id: item._id,
   name: item.name,
   icon: item.icon,
-  like: (item.like === 'true') ? true : false,
+  like: (item.like === 'true' || item.like === true) ? true : false,
 });
 
 module.exports = (app, db) => {
@@ -35,13 +35,14 @@ module.exports = (app, db) => {
   app.post('/cats', async (req, res) => {
     const cat = {
       //id: req.body.body,
-      name: req.body.name,
-      icon: req.body.icon,
-      like: req.body.like,
+      name: req.body.name || '',
+      icon: req.body.icon || '',
+      like: req.body.like || false,
     };
     try {
       const result = await db.collection('cats').insert(cat);
-      res.send(result.ops[0]);
+      const formattedResult = itemToCat(result.ops[0]);
+      res.send(formattedResult);
     } catch (err) {
       res.send({ 'error': 'An error has occurred' });
     }

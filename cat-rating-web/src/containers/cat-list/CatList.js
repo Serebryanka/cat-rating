@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from "react-redux";
-import { removeCat, toggleLike, fetchCats } from "../../actions/cats";
+import { removeCat, setLike, fetchCats } from "../../actions/cats";
 import { getFilteredAndSortedCats } from "../../selectors/cats";
 
 import CatList from '../../components/cat-list';
@@ -49,7 +49,11 @@ export default connect(
   	onRequest: () => {
   		dispatch(fetchCats())
   	},
-    onDelete: removeCat,
-    onLikeChanged: toggleLike,
+    onDelete: (id) => {
+  		dispatch(removeCat(id))
+  	},
+    onLikeChanged: (id, like) => {
+  		dispatch(setLike(id, like))
+  	},
   })
 )(Container);

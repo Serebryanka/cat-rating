@@ -3,23 +3,43 @@ export const REMOVE_CAT = "cats/REMOVE_CAT";
 export const SET_LIKE = "cats/SET_LIKE";
 export const SET_FILTER = "cats/SET_FILTER";
 export const SET_SORTING = "cats/SET_SORTING";
-export const FETCH_CATS = "cats/FETCH_CATS";
+
+export const FETCH_CATS_REQUEST = "cats/FETCH_CATS_REQUEST";
+export const FETCH_CATS_SUCCESS = "cats/FETCH_CATS_SUCCESS";
+export const FETCH_CATS_FAIL = "cats/FETCH_CATS_FAIL";
 
 
+const fetchCatsRequest = () => ({
+  type: FETCH_CATS_REQUEST,
+})
+
+const fetchCatsSuccess = items => ({
+  type: FETCH_CATS_SUCCESS,
+  payload: {
+    items,
+  },
+})
+
+const fetchCatsFail = err => ({
+  type: FETCH_CATS_FAIL,
+  payload: {
+    err,
+  },
+})
 
 export const fetchCats = () => {
   return async (dispatch) => {
     try {
+      dispatch(fetchCatsRequest());
       const response = await fetch('http://localhost:8000/cats');
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
       const cats = await response.json();
-      dispatch({
-        type: FETCH_CATS,
-        payload: {
-          items: cats,
-        },
-      });
+      dispatch(fetchCatsSuccess(cats));
     } catch (err) {
       console.log(err);
+      dispatch(fetchCatsFail(err));
     }
   };
 };

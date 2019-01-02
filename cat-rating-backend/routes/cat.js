@@ -1,6 +1,10 @@
 
 var ObjectID = require('mongodb').ObjectID;
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 const itemToCat = (item) => ({
   id: item._id,
   name: item.name,
@@ -28,7 +32,7 @@ module.exports = (app, db) => {
       const cats = receivedCats.map(itemToCat);
       res.send(cats);
     } catch (err) {
-      res.send({'error':'An error has occurred'});
+      res.status(500).send({'error':'An error has occurred'});
     }
   });
 

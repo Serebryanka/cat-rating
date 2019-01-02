@@ -26,7 +26,7 @@ class CatItem extends Component {
 	handleChange = () => {
 	  //event.target.checked;
 		const {cat, onLikeChanged} = this.props;
-		onLikeChanged(cat.id);
+		onLikeChanged(cat.id, !cat.like);
   };
 	render() {
 		const {classes, cat} = this.props;

@@ -40,7 +40,7 @@ module.exports = (app, db) => {
       like: req.body.like || false,
     };
     try {
-      const result = await db.collection('cats').insert(cat);
+      const result = await db.collection('cats').insertOne(cat);
       const formattedResult = itemToCat(result.ops[0]);
       res.send(formattedResult);
     } catch (err) {
@@ -60,4 +60,19 @@ module.exports = (app, db) => {
       res.send({'error':'An error has occurred'});
     }
   });
+
+  app.get('/cats/:id/like', async (req, res) => {
+    const id = req.params.id;
+    const like = req.query.value === 'true';
+    const details = { '_id': new ObjectID(id) };
+    try {
+      const result = await db.collection('cats').updateOne(details, {$set: {like}});
+      res.send({
+        success: result.result.n === 1,
+      });
+    } catch (err) {
+      res.send({'error':'An error has occurred'});
+    }
+  });
+
 };

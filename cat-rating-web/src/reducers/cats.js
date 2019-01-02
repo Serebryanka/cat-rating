@@ -1,4 +1,12 @@
-import { ADD_CAT, REMOVE_CAT, SET_LIKE, FETCH_CATS } from "../actions/cats";
+import {
+  ADD_CAT,
+  REMOVE_CAT,
+  SET_LIKE,
+  FETCH_CATS_REQUEST,
+  FETCH_CATS_SUCCESS,
+  FETCH_CATS_FAIL,
+} from "../actions/cats";
+
 
 const initialState = {
   items: [
@@ -15,16 +23,42 @@ const initialState = {
       like: true,
     },*/
   ],
+  fetching: false,
+  fetchErr: null,
+  appending: false,
+  appendErr: null,
+  removing: false,
+  removeErr: null,
+  updating: false,
+  updateErr: null,
 };
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case FETCH_CATS: {
+    case FETCH_CATS_REQUEST: {
+      return {
+        ...state,
+        fetching: true,
+        fetchErr: null,
+      };
+    }
+    case FETCH_CATS_SUCCESS: {
       const {items} = action.payload;
       return {
         ...state,
         items,
-      }
+        fetching: false,
+        fetchErr: null,
+      };
+    }
+    case FETCH_CATS_FAIL: {
+      const {err} = action.payload;
+      return {
+        ...state,
+        items: [],
+        fetching: false,
+        fetchErr: err,
+      };
     }
     case ADD_CAT: {
       const { item } = action.payload;

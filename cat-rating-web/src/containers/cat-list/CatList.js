@@ -13,10 +13,12 @@ class Container extends Component {
     this.props.onRequest()
   }
   render() {
-    const {cats, onDelete, onLikeChanged} = this.props;
+    const {cats, loading, loadErr, onDelete, onLikeChanged} = this.props;
     return (
       <CatList
         cats={cats}
+        loading={loading}
+        loadErr={loadErr}
         onDelete={onDelete}
         onLikeChanged={onLikeChanged}
       />
@@ -32,6 +34,8 @@ Container.propTypes = {
 		icon: PropTypes.string.isRequired,
 		like: PropTypes.bool.isRequired,
 	})).isRequired,
+  loading: PropTypes.bool.isRequired,
+  loadErr: PropTypes.any.isRequired,
 	onDelete: PropTypes.func.isRequired,
 	onLikeChanged: PropTypes.func.isRequired,
   onRequest: PropTypes.func.isRequired,
@@ -40,7 +44,11 @@ Container.propTypes = {
 const mapStateToProps = state => {
   const { searchFilter, sorting } = state;
   const cats = getFilteredAndSortedCats(state, sorting.sortField, searchFilter.value);
-  return { cats };
+  return {
+    cats,
+    loading: state.cats.fetching,
+    loadErr: state.cats.fetchErr,
+  };
 };
 
 export default connect(

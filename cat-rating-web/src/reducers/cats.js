@@ -1,4 +1,4 @@
-import { ADD_CAT, REMOVE_CAT, TOGGLE_LIKE, FETCH_CATS } from "../actions/cats";
+import { ADD_CAT, REMOVE_CAT, SET_LIKE, FETCH_CATS } from "../actions/cats";
 
 const initialState = {
   items: [
@@ -40,14 +40,14 @@ export default function(state = initialState, action) {
         items: state.items.filter(item => item.id !== id),
       };
     }
-    case TOGGLE_LIKE: {
-      const {id} = action.payload;
+    case SET_LIKE: {
+      const {id, like} = action.payload;
       return {
         ...state,
         items: state.items.map(item => {
   				return item.id === id ? {
   						...item,
-  						like: !item.like,
+  						like,
   					} : item;
           }),
       };

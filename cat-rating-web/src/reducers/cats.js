@@ -1,5 +1,7 @@
 import {
-  ADD_CAT,
+  ADD_CAT_REQUEST,
+  ADD_CAT_SUCCESS,
+  ADD_CAT_FAIL,
   REMOVE_CAT,
   SET_LIKE,
   FETCH_CATS_REQUEST,
@@ -9,20 +11,7 @@ import {
 
 
 const initialState = {
-  items: [
-    /*{
-      id: 1,
-      name: "Kisa",
-      icon: "https://cmkt-image-prd.global.ssl.fastly.net/0.1.0/ps/1770700/1160/772/m1/fpnw/wm0/black-cat-icon-flat-01-.jpg?1476726021&s=c956a64f60cd25e39dcd353c52e188a1",
-      like: true,
-    },
-    {
-      id: 2,
-      name: "Kotya",
-      icon: "https://cdn3.iconfinder.com/data/icons/cat-force/256/cat_hungry.png",
-      like: true,
-    },*/
-  ],
+  items: [],
   fetching: false,
   fetchErr: null,
   appending: false,
@@ -60,11 +49,28 @@ export default function(state = initialState, action) {
         fetchErr: err,
       };
     }
-    case ADD_CAT: {
+    case ADD_CAT_REQUEST: {
+      return {
+        ...state,
+        appending: true,
+        appendErr: null,
+      };
+    }
+    case ADD_CAT_SUCCESS: {
       const { item } = action.payload;
       return {
         ...state,
         items: [...state.items, item],
+        appending: false,
+        appendErr: null,
+      };
+    }
+    case ADD_CAT_FAIL: {
+      const {err} = action.payload;
+      return {
+        ...state,
+        appending: false,
+        appendErr: err,
       };
     }
     case REMOVE_CAT: {

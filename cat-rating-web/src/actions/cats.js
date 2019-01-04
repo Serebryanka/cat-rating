@@ -1,4 +1,8 @@
-export const ADD_CAT = "cats/ADD_CAT";
+
+export const ADD_CAT_REQUEST = "cats/ADD_CAT_REQUEST";
+export const ADD_CAT_SUCCESS = "cats/ADD_CAT_SUCCESS";
+export const ADD_CAT_FAIL = "cats/ADD_CAT_FAIL";
+
 export const REMOVE_CAT = "cats/REMOVE_CAT";
 export const SET_LIKE = "cats/SET_LIKE";
 export const SET_FILTER = "cats/SET_FILTER";
@@ -44,9 +48,28 @@ export const fetchCats = () => {
   };
 };
 
+const addCatRequest = () => ({
+  type: ADD_CAT_REQUEST,
+})
+
+const addCatSuccess = item => ({
+  type: ADD_CAT_SUCCESS,
+  payload: {
+    item,
+  },
+})
+
+const addCatFail = err => ({
+  type: ADD_CAT_FAIL,
+  payload: {
+    err,
+  },
+})
+
 export const addCat = item => {
   return async (dispatch) => {
     try {
+      dispatch(addCatRequest());
       const response = await fetch('http://localhost:8000/cats', {
         method: 'POST',
         headers: {
@@ -54,15 +77,14 @@ export const addCat = item => {
         },
         body: JSON.stringify(item),
       });
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
       const cat = await response.json();
-      dispatch({
-        type: ADD_CAT,
-        payload: {
-          item: cat,
-        },
-      });
+      dispatch(addCatSuccess(cat));
     } catch (err) {
       console.log(err);
+      dispatch(addCatFail(err));
     }
   };
 };

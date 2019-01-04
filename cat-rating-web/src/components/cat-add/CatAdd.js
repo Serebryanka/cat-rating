@@ -3,9 +3,17 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const styles = theme => ({
-
+  div: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  button: {
+    height: '50px',
+    marginLeft: '10px',
+  },
 });
 
 class CatAdd extends Component {
@@ -34,8 +42,14 @@ class CatAdd extends Component {
 	};
 	render() {
     const {icon, name} = this.state;
+    const {classes, appending, appendErr} = this.props;
+    if (appendErr) {
+      alert("The error occured! Cat wasn't added!");
+    }
     return (
-      <div>
+      <div
+        className={classes.div}
+      >
         <TextField
           id="outlined-icon"
           label="Icon"
@@ -53,11 +67,15 @@ class CatAdd extends Component {
           variant="outlined"
         />
         <Button
+          className={classes.button}
           variant="contained"
           color="secondary"
           onClick={this.handleButtonClick}
+          disabled={appending}
         >
-          Add Kotik
+        {
+          appending ? (<CircularProgress color="secondary" />) : "Add Kotik"
+        }
         </Button>
       </div>
     );
@@ -66,7 +84,14 @@ class CatAdd extends Component {
 
 CatAdd.propTypes = {
 	classes: PropTypes.object.isRequired,
+  appending: PropTypes.bool,
+  appendErr: PropTypes.any,
 	onAdd: PropTypes.func.isRequired,
+}
+
+CatAdd.defaultProps = {
+  appending: false,
+  appendErr: null,
 }
 
 export default withStyles(styles)(CatAdd);

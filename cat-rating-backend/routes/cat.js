@@ -22,7 +22,7 @@ module.exports = (app, db) => {
       const cat = itemToCat(receivedCat);
       res.send(cat);
     } catch (err) {
-      res.send({'error':'An error has occurred'});
+      res.status(500).send({'error':'An error has occurred'});
     }
   });
 
@@ -48,7 +48,7 @@ module.exports = (app, db) => {
       const formattedResult = itemToCat(result.ops[0]);
       res.send(formattedResult);
     } catch (err) {
-      res.send({ 'error': 'An error has occurred' });
+      res.status(500).send({ 'error': 'An error has occurred' });
     }
   }); // End post cats
 
@@ -61,7 +61,7 @@ module.exports = (app, db) => {
         success: result.result.n === 1,
       });
     } catch (err) {
-      res.send({'error':'An error has occurred'});
+      res.status(500).send({'error':'An error has occurred'});
     }
   });
 

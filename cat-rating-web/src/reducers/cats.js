@@ -2,7 +2,9 @@ import {
   ADD_CAT_REQUEST,
   ADD_CAT_SUCCESS,
   ADD_CAT_FAIL,
-  REMOVE_CAT,
+  REMOVE_CAT_REQUEST,
+  REMOVE_CAT_SUCCESS,
+  REMOVE_CAT_FAIL,
   SET_LIKE,
   FETCH_CATS_REQUEST,
   FETCH_CATS_SUCCESS,
@@ -16,11 +18,16 @@ const initialState = {
   fetchErr: null,
   appending: false,
   appendErr: null,
-  removing: false,
-  removeErr: null,
+  //removing: false,
+  //removeErr: null,
   updating: false,
   updateErr: null,
 };
+
+const catToItem = cat => ({
+  ...cat,
+  removing: false,
+});
 
 export default function(state = initialState, action) {
   switch (action.type) {
@@ -35,7 +42,7 @@ export default function(state = initialState, action) {
       const {items} = action.payload;
       return {
         ...state,
-        items,
+        items: items.map(catToItem),
         fetching: false,
         fetchErr: null,
       };
@@ -60,7 +67,7 @@ export default function(state = initialState, action) {
       const { item } = action.payload;
       return {
         ...state,
-        items: [...state.items, item],
+        items: [...state.items, catToItem(item)],
         appending: false,
         appendErr: null,
       };
@@ -73,11 +80,36 @@ export default function(state = initialState, action) {
         appendErr: err,
       };
     }
-    case REMOVE_CAT: {
+    case REMOVE_CAT_REQUEST: {
+      const {id} = action.payload;
+      return {
+        ...state,
+        items: state.items.map(item => {
+          return item.id === id ? {
+            ...item,
+            removing: true,
+          } : item;
+        }),
+      };
+    }
+    case REMOVE_CAT_SUCCESS: {
       const {id} = action.payload;
       return {
         ...state,
         items: state.items.filter(item => item.id !== id),
+      };
+    }
+    case REMOVE_CAT_FAIL: {
+      const {id, err} = action.payload;
+      return {
+        ...state,
+        items: state.items.map(item => {
+          return item.id === id ? {
+            ...item,
+            removing: false,
+            //removeErr: err,
+          } : item;
+        }),
       };
     }
     case SET_LIKE: {

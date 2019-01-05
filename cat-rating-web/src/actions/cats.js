@@ -4,6 +4,10 @@ export const ADD_CAT_SUCCESS = "cats/ADD_CAT_SUCCESS";
 export const ADD_CAT_FAIL = "cats/ADD_CAT_FAIL";
 
 export const REMOVE_CAT = "cats/REMOVE_CAT";
+export const REMOVE_CAT_REQUEST = "cats/REMOVE_CAT_REQUEST";
+export const REMOVE_CAT_SUCCESS = "cats/REMOVE_CAT_SUCCESS";
+export const REMOVE_CAT_FAIL = "cats/REMOVE_CAT_FAIL";
+
 export const SET_LIKE = "cats/SET_LIKE";
 export const SET_FILTER = "cats/SET_FILTER";
 export const SET_SORTING = "cats/SET_SORTING";
@@ -89,22 +93,44 @@ export const addCat = item => {
   };
 };
 
+const removeCatRequest = id => ({
+  type: REMOVE_CAT_REQUEST,
+  payload: {
+    id,
+  }
+})
+
+const removeCatSuccess = id => ({
+  type: REMOVE_CAT_SUCCESS,
+  payload: {
+    id,
+  },
+})
+
+const removeCatFail = (id, err) => ({
+  type: REMOVE_CAT_FAIL,
+  payload: {
+    id,
+    err,
+  },
+})
+
 export const removeCat = id => {
   return async (dispatch) => {
     try {
+      dispatch(removeCatRequest(id));
       const address = `http://localhost:8000/cats/${id}`;
       const response = await fetch(address, {
         method: 'DELETE',
       });
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
       const result = await response.json();
-      dispatch({
-        type: REMOVE_CAT,
-        payload: {
-          id: result.success ? id : '',
-        },
-      });
+      dispatch(removeCatSuccess(id));
     } catch (err) {
       console.log(err);
+      dispatch(removeCatFail(err));
     }
   };
 };

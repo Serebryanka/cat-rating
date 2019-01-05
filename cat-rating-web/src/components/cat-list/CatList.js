@@ -25,6 +25,7 @@ const CatList = ({cats, loading, loadErr, onDelete, onLikeChanged}) => {
         <CatItem
           key={cat.id}
           cat={cat}
+          removing={cat.removing}
           onDelete={onDelete}
           onLikeChanged={onLikeChanged}
         />
@@ -39,6 +40,7 @@ CatList.propTypes = {
 		name: PropTypes.string.isRequired,
 		icon: PropTypes.string.isRequired,
 		like: PropTypes.bool.isRequired,
+    removing: PropTypes.bool,
 	})).isRequired,
   loading: PropTypes.bool,
   loadErr: PropTypes.object,

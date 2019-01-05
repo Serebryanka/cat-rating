@@ -6,6 +6,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 
@@ -29,7 +30,7 @@ class CatItem extends Component {
 		onLikeChanged(cat.id, !cat.like);
   };
 	render() {
-		const {classes, cat} = this.props;
+		const {classes, cat, removing} = this.props;
 		return (
 			<ListItem key={cat.id} button>
 				<Avatar alt={cat.name} src={cat.icon} />
@@ -42,7 +43,9 @@ class CatItem extends Component {
 					aria-label="Delete"
 					onClick={this.handleDeleteClick}
 				>
-					<DeleteIcon />
+        {
+          removing ? (<CircularProgress color="secondary" />) : (<DeleteIcon />)
+        }
 				</IconButton>
 				<FormControlLabel
           control={
@@ -67,8 +70,13 @@ CatItem.propTypes = {
 		icon: PropTypes.string.isRequired,
 		like: PropTypes.bool.isRequired,
 	}).isRequired,
+  removing: PropTypes.bool,
 	onDelete: PropTypes.func.isRequired,
 	onLikeChanged: PropTypes.func.isRequired,
+}
+
+CatItem.defaultProps = {
+  removing: false,
 }
 
 export default withStyles(styles)(CatItem);

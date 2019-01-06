@@ -3,12 +3,14 @@ export const ADD_CAT_REQUEST = "cats/ADD_CAT_REQUEST";
 export const ADD_CAT_SUCCESS = "cats/ADD_CAT_SUCCESS";
 export const ADD_CAT_FAIL = "cats/ADD_CAT_FAIL";
 
-export const REMOVE_CAT = "cats/REMOVE_CAT";
 export const REMOVE_CAT_REQUEST = "cats/REMOVE_CAT_REQUEST";
 export const REMOVE_CAT_SUCCESS = "cats/REMOVE_CAT_SUCCESS";
 export const REMOVE_CAT_FAIL = "cats/REMOVE_CAT_FAIL";
 
-export const SET_LIKE = "cats/SET_LIKE";
+export const SET_LIKE_REQUEST = "cats/SET_LIKE_REQUEST";
+export const SET_LIKE_SUCCESS = "cats/SET_LIKE_SUCCESS";
+export const SET_LIKE_FAIL = "cats/SET_LIKE_FAIL";
+
 export const SET_FILTER = "cats/SET_FILTER";
 export const SET_SORTING = "cats/SET_SORTING";
 
@@ -135,21 +137,43 @@ export const removeCat = id => {
   };
 };
 
+const setLikeRequest = id => ({
+  type: SET_LIKE_REQUEST,
+  payload: {
+    id,
+  }
+})
+
+const setLikeSuccess = (id, value) => ({
+  type: SET_LIKE_SUCCESS,
+  payload: {
+    id,
+    like: value,
+  },
+})
+
+const setLikeFail = (id, err) => ({
+  type: SET_LIKE_FAIL,
+  payload: {
+    id,
+    err,
+  },
+})
+
 export const setLike = (id, value) => {
   return async (dispatch) => {
     try {
+      dispatch(setLikeRequest(id));
       const address = `http://localhost:8000/cats/${id}/like?value=${value}`;
       const response = await fetch(address);
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
       const result = await response.json();
-      dispatch({
-        type: SET_LIKE,
-        payload: {
-          id: result.success ? id : '',
-          like: value,
-        },
-      });
+      dispatch(setLikeSuccess(id, value));
     } catch (err) {
       console.log(err);
+      dispatch(setLikeFail(err));
     }
   };
 };

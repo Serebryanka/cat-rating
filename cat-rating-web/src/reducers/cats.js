@@ -5,7 +5,9 @@ import {
   REMOVE_CAT_REQUEST,
   REMOVE_CAT_SUCCESS,
   REMOVE_CAT_FAIL,
-  SET_LIKE,
+  SET_LIKE_REQUEST,
+  SET_LIKE_SUCCESS,
+  SET_LIKE_FAIL,
   FETCH_CATS_REQUEST,
   FETCH_CATS_SUCCESS,
   FETCH_CATS_FAIL,
@@ -18,15 +20,12 @@ const initialState = {
   fetchErr: null,
   appending: false,
   appendErr: null,
-  //removing: false,
-  //removeErr: null,
-  updating: false,
-  updateErr: null,
 };
 
 const catToItem = cat => ({
   ...cat,
   removing: false,
+  updating: false,
 });
 
 export default function(state = initialState, action) {
@@ -112,7 +111,19 @@ export default function(state = initialState, action) {
         }),
       };
     }
-    case SET_LIKE: {
+    case SET_LIKE_REQUEST: {
+      const {id} = action.payload;
+      return {
+        ...state,
+        items: state.items.map(item => {
+          return item.id === id ? {
+            ...item,
+            updating: true,
+          } : item;
+        }),
+      };
+    }
+    case SET_LIKE_SUCCESS: {
       const {id, like} = action.payload;
       return {
         ...state,
@@ -120,8 +131,22 @@ export default function(state = initialState, action) {
   				return item.id === id ? {
   						...item,
   						like,
+              updating: false,
   					} : item;
           }),
+      };
+    }
+    case SET_LIKE_FAIL: {
+      const {id, err} = action.payload;
+      return {
+        ...state,
+        items: state.items.map(item => {
+          return item.id === id ? {
+            ...item,
+            updating: false,
+            //updateErr: err,
+          } : item;
+        }),
       };
     }
     default:

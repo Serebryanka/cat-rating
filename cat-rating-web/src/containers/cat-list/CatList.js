@@ -34,6 +34,7 @@ Container.propTypes = {
 		icon: PropTypes.string.isRequired,
 		like: PropTypes.bool.isRequired,
     removing: PropTypes.bool,
+    updating: PropTypes.bool,
 	})).isRequired,
   loading: PropTypes.bool.isRequired,
   loadErr: PropTypes.any.isRequired,

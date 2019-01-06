@@ -30,7 +30,7 @@ class CatItem extends Component {
 		onLikeChanged(cat.id, !cat.like);
   };
 	render() {
-		const {classes, cat, removing} = this.props;
+		const {classes, cat, removing, updating} = this.props;
 		return (
 			<ListItem key={cat.id} button>
 				<Avatar alt={cat.name} src={cat.icon} />
@@ -53,6 +53,7 @@ class CatItem extends Component {
               checked={cat.like}
               onChange={this.handleChange}
               value="like"
+              disabled={updating}
             />
           }
           label={cat.like ? 'Like' : 'Dislike'}
@@ -71,12 +72,14 @@ CatItem.propTypes = {
 		like: PropTypes.bool.isRequired,
 	}).isRequired,
   removing: PropTypes.bool,
+  updating: PropTypes.bool,
 	onDelete: PropTypes.func.isRequired,
 	onLikeChanged: PropTypes.func.isRequired,
 }
 
 CatItem.defaultProps = {
   removing: false,
+  updating: false,
 }
 
 export default withStyles(styles)(CatItem);

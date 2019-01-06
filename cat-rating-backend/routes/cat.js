@@ -75,7 +75,7 @@ module.exports = (app, db) => {
         success: result.result.n === 1,
       });
     } catch (err) {
-      res.send({'error':'An error has occurred'});
+      res.status(500).send({'error':'An error has occurred'});
     }
   });
 

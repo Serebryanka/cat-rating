@@ -1,3 +1,9 @@
+import {
+  list as listCatsApi,
+  create as createCatApi,
+  remove as removeCatApi,
+  like as likeCatApi,
+} from '../api/cats';
 
 export const ADD_CAT_REQUEST = "cats/ADD_CAT_REQUEST";
 export const ADD_CAT_SUCCESS = "cats/ADD_CAT_SUCCESS";
@@ -41,11 +47,7 @@ export const fetchCats = () => {
   return async (dispatch) => {
     try {
       dispatch(fetchCatsRequest());
-      const response = await fetch('http://localhost:8000/cats');
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-      const cats = await response.json();
+      const cats = await listCatsApi();
       dispatch(fetchCatsSuccess(cats));
     } catch (err) {
       console.log(err);
@@ -76,17 +78,7 @@ export const addCat = item => {
   return async (dispatch) => {
     try {
       dispatch(addCatRequest());
-      const response = await fetch('http://localhost:8000/cats', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(item),
-      });
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-      const cat = await response.json();
+      const cat = await createCatApi(item);
       dispatch(addCatSuccess(cat));
     } catch (err) {
       console.log(err);
@@ -121,14 +113,7 @@ export const removeCat = id => {
   return async (dispatch) => {
     try {
       dispatch(removeCatRequest(id));
-      const address = `http://localhost:8000/cats/${id}`;
-      const response = await fetch(address, {
-        method: 'DELETE',
-      });
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-      const result = await response.json();
+      await removeCatApi(id);
       dispatch(removeCatSuccess(id));
     } catch (err) {
       console.log(err);
@@ -164,12 +149,7 @@ export const setLike = (id, value) => {
   return async (dispatch) => {
     try {
       dispatch(setLikeRequest(id));
-      const address = `http://localhost:8000/cats/${id}/like?value=${value}`;
-      const response = await fetch(address);
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-      const result = await response.json();
+      await likeCatApi(id, value);
       dispatch(setLikeSuccess(id, value));
     } catch (err) {
       console.log(err);

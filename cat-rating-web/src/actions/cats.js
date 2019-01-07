@@ -5,6 +5,10 @@ import {
   like as likeCatApi,
 } from '../api/cats';
 
+export const FETCH_CATS_REQUEST = "cats/FETCH_CATS_REQUEST";
+export const FETCH_CATS_SUCCESS = "cats/FETCH_CATS_SUCCESS";
+export const FETCH_CATS_FAIL = "cats/FETCH_CATS_FAIL";
+
 export const ADD_CAT_REQUEST = "cats/ADD_CAT_REQUEST";
 export const ADD_CAT_SUCCESS = "cats/ADD_CAT_SUCCESS";
 export const ADD_CAT_FAIL = "cats/ADD_CAT_FAIL";
@@ -19,10 +23,6 @@ export const SET_LIKE_FAIL = "cats/SET_LIKE_FAIL";
 
 export const SET_FILTER = "cats/SET_FILTER";
 export const SET_SORTING = "cats/SET_SORTING";
-
-export const FETCH_CATS_REQUEST = "cats/FETCH_CATS_REQUEST";
-export const FETCH_CATS_SUCCESS = "cats/FETCH_CATS_SUCCESS";
-export const FETCH_CATS_FAIL = "cats/FETCH_CATS_FAIL";
 
 
 const fetchCatsRequest = () => ({

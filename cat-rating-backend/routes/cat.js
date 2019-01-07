@@ -14,6 +14,7 @@ const itemToCat = (item) => ({
 
 module.exports = (app, db) => {
 
+  // get by ID
   app.get('/cats/:id', async (req, res) => {
     const id = req.params.id;
     const details = { '_id': new ObjectID(id) };
@@ -26,6 +27,7 @@ module.exports = (app, db) => {
     }
   });
 
+  // get all
   app.get('/cats', async (req, res) => {
     try {
       const receivedCats = await db.collection('cats').find({}).toArray();
@@ -36,22 +38,24 @@ module.exports = (app, db) => {
     }
   });
 
+  // create
   app.post('/cats', async (req, res) => {
-    const cat = {
+    const catBody = {
       //id: req.body.body,
       name: req.body.name || '',
       icon: req.body.icon || '',
       like: req.body.like || false,
     };
     try {
-      const result = await db.collection('cats').insertOne(cat);
-      const formattedResult = itemToCat(result.ops[0]);
-      res.send(formattedResult);
+      const result = await db.collection('cats').insertOne(catBody);
+      const cat = itemToCat(result.ops[0]);
+      res.send(cat);
     } catch (err) {
       res.status(500).send({ 'error': 'An error has occurred' });
     }
   }); // End post cats
 
+  // delete
   app.delete('/cats/:id', async (req, res) => {
     const id = req.params.id;
     const details = { '_id': new ObjectID(id) };
@@ -65,6 +69,7 @@ module.exports = (app, db) => {
     }
   });
 
+  // like
   app.get('/cats/:id/like', async (req, res) => {
     const id = req.params.id;
     const like = req.query.value === 'true';

@@ -7,7 +7,7 @@ import CatSort from '../../containers/cat-sort';
 import CatAdd from '../../containers/cat-add';
 
 
-class CatPage extends Component {
+class CatsPage extends Component {
 	state = {
 		text: "Pelmeshki",
 	}
@@ -41,4 +41,4 @@ class CatPage extends Component {
   }
 }
 
-export default CatPage;
+export default CatsPage;

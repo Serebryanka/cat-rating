@@ -9,6 +9,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
+import {Link} from 'react-router-dom';
 
 const styles = theme => ({
   button: {
@@ -33,8 +34,9 @@ class CatItem extends Component {
 		const {classes, cat, removing, updating} = this.props;
 		return (
 			<ListItem key={cat.id} button>
-				<Avatar alt={cat.name} src={cat.icon} />
-				{/*<ListItemText primary={cat.name} />*/}
+        <Link to={`/cat/${cat.id}`}>
+          <Avatar alt={cat.name} src={cat.icon} />
+        </Link>
 				<Typography variant="title" color="error" gutterBottom>
 					{cat.name}
 				</Typography>

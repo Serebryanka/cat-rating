@@ -1,3 +1,12 @@
+export const get = async (id) => {
+    const response = await fetch(`http://localhost:8000/cats/${id}`);
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+    const cat = await response.json();
+    return cat;
+};
+
 export const list = async () => {
     const response = await fetch('http://localhost:8000/cats');
     if (!response.ok) {

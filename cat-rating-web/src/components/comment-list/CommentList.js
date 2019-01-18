@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Divider from '@material-ui/core/Divider';
 import CommentItem from '../comment-item';
 
 const styles = theme => ({
@@ -10,6 +11,7 @@ const styles = theme => ({
     width: '100%',
     maxWidth: 500,
     backgroundColor: theme.palette.background.paper,
+    padding: 0,
   },
 });
 
@@ -29,16 +31,19 @@ const CommentList = ({classes, comments, loading, loadErr, onDelete}) => {
     );
   }
   return (
-    <List className={classes.root} dense>
-      {comments.map(comment => (
-        <CommentItem
-          key={comment.id}
-          comment={comment}
-          removing={comment.removing}
-          onDelete={onDelete}
-        />
-      ))}
-    </List>
+      <List className={classes.root} dense>
+        {comments.map(comment => (
+          <div>
+            <CommentItem
+              key={comment.id}
+              comment={comment}
+              removing={comment.removing}
+              onDelete={onDelete}
+            />
+          <Divider variant="middle" />
+          </div>
+        ))}
+      </List>
   );
 };
 

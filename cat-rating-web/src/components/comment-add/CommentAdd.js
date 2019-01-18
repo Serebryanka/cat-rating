@@ -9,6 +9,7 @@ const styles = theme => ({
   container: {
     display: 'flex',
     flexWrap: 'wrap',
+    alignItems: 'center',
   },
   textField: {
     marginLeft: theme.spacing.unit,
@@ -51,7 +52,7 @@ class CommentAdd extends Component {
     }
     return (
       <div
-        className={classes.div}
+        className={classes.container}
       >
         <TextField
           id="outlined-multiline-static"

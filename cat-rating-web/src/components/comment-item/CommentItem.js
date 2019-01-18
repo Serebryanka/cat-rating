@@ -9,9 +9,9 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 const styles = theme => ({
   root: {
-    width: '100%',
-    maxWidth: 360,
     backgroundColor: theme.palette.background.paper,
+    paddingTop: theme.spacing.unit * 0.2,
+    paddingBottom: theme.spacing.unit * 0.2,
   },
   button: {
     margin: theme.spacing.unit * 2,
@@ -28,7 +28,7 @@ class CommentItem extends Component {
   render() {
     const { classes, comment, removing } = this.props;
 		return (
-      <ListItem alignItems="flex-start">
+      <ListItem className={classes.root} alignItems="flex-start">
         <ListItemText
           primary={comment.text}
         />

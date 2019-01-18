@@ -18,6 +18,12 @@ const styles = theme => ({
   input: {
     display: 'none',
   },
+  avatar: {
+    marginRight: theme.spacing.unit * 2,
+  },
+  text: {
+    marginBottom: 0,
+  },
 });
 
 class CatItem extends Component {
@@ -34,10 +40,13 @@ class CatItem extends Component {
 		const {classes, cat, removing, updating} = this.props;
 		return (
 			<ListItem key={cat.id} button>
-        <Link to={`/cat/${cat.id}`}>
+        <Link
+          to={`/cat/${cat.id}`}
+          className={classes.avatar}
+        >
           <Avatar alt={cat.name} src={cat.icon} />
         </Link>
-				<Typography variant="title" color="error" gutterBottom>
+				<Typography className={classes.text} variant="title" color="error" gutterBottom>
 					{cat.name}
 				</Typography>
 				<IconButton

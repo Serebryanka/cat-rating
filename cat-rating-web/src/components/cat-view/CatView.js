@@ -8,8 +8,17 @@ import Typography from '@material-ui/core/Typography';
 const styles = theme => ({
   root: {
     ...theme.mixins.gutters(),
+    display: 'flex',
+    alignItems: 'center',
     paddingTop: theme.spacing.unit * 2,
     paddingBottom: theme.spacing.unit * 2,
+    margin: theme.spacing.unit * 2,
+  },
+  avatar: {
+    marginRight: theme.spacing.unit * 2,
+  },
+  text: {
+    margin: 0,
   },
 });
 
@@ -20,8 +29,8 @@ class CatView extends Component {
     return (
       <div>
       <Paper className={classes.root} elevation={1}>
-        <Avatar alt={cat.name} src={cat.icon} />
-        <Typography variant="h5" component="h3">
+        <Avatar className={classes.avatar} alt={cat.name} src={cat.icon} />
+        <Typography className={classes.text} variant="h5" component="h3">
           {cat.name}
         </Typography>
       </Paper>
